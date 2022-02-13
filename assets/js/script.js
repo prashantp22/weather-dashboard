@@ -24,14 +24,10 @@ var formSubmitHandler = function (event) {
 
         searcheEl.appendChild(cityList); 
 
-
-       
         searchedCities.push(requestedCity);
-
-        
+ 
         localStorage.setItem("previousCities", JSON.stringify(searchedCities));
         
-     
         getWeather(requestedCity);
         
         cityInputEl.value = "";
@@ -50,7 +46,7 @@ var getWeather = function (cityName) {
     .then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
-                // send data to today weather display function
+                // today weather display
                 displayTodaysWeather(data, cityName);
                  // get UV Index
                 getUVIndex(data.coord.lon, data.coord.lat);
@@ -61,25 +57,23 @@ var getWeather = function (cityName) {
     });
 }
 
+
 var displayTodaysWeather = function (info, city) {
   
     document.querySelectorAll(".current").textContent="";
 
-    // add city to top of page
     cityNameEl.textContent = city + " " + moment().format("L");
 
-
-    
     var temp = info.main.temp
-    var fixedTemp = temp.toFixed(1);
-    currentTempEl.innerHTML = fixedTemp + "&deg; F";
-
+    currentTempEl.innerHTML = temp + "&deg; F";
     currentHumidEl.textContent = info.main.humidity + "%";
-    
  
     var windSpeed = info.wind.speed;
-    var fixedWindSpeed = windSpeed.toFixed(1);
-    currentWindEl.textContent = fixedWindSpeed + " MPH";
+    currentWindEl.textContent = windSpeed + " MPH";
+
+    var iconEl = document.createElement("img")
+    iconEl.setAttribute("src", "https://openweathermap.org/img/w/" + info.weather[0].icon + ".png")
+    cityNameEl.appendChild(iconEl);
 }
 
 var getUVIndex = function (lon, lat) {
@@ -132,6 +126,14 @@ var displayWeeklyWeather = function (info) {
         var humidity = info.daily[i].humidity;
         document.querySelector(".temp-" + [i]).innerHTML = temp + "&deg; F";
         document.querySelector(".humid-" + [i]).textContent = humidity + "%";
+
+        var icon = info.daily[i].weather[0].icon
+
+        var iconEl = document.createElement("img")
+        iconEl.setAttribute("src", "https://openweathermap.org/img/w/" + icon + ".png")
+        document.querySelector(".icon-" + [i]).innerHTML="";
+        document.querySelector(".icon-" + [i]).appendChild(iconEl);
+        
     }
 }
 
