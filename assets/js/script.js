@@ -54,11 +54,11 @@ var getWeather = function (cityName) {
                 displayTodaysWeather(data, cityName);
                  // get UV Index
                 getUVIndex(data.coord.lon, data.coord.lat);
-            })
-        } else {
-                   alert("Error: " + response.statusText);
+                // get weekly weather
+                getWeeklyWeather(data.coord.lon, data.coord.lat);
+            });
         }
-    })
+    });
 }
 
 var displayTodaysWeather = function (info, city) {
@@ -103,6 +103,36 @@ var getUVIndex = function (lon, lat) {
             });
         }
     });
+}
+
+// get weekly weather
+var getWeeklyWeather = function (lon, lat) {
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=8fc9d3841b8ffcc0fce5fb6a16a654cc"
+
+    fetch(apiUrl)
+    .then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                displayWeeklyWeather(data);
+            })
+        }
+    })
+}
+
+var displayWeeklyWeather = function (info) {
+    // clear content
+    document.querySelectorAll(".card-header").textContent="";
+
+    for (var i=1; i < 6; i++) {
+        var date = moment().add(i, 'd').format('L');
+        document.querySelector(".day-" + i).textContent = date;
+
+    
+        var temp = info.daily[i].temp.day;
+        var humidity = info.daily[i].humidity;
+        document.querySelector(".temp-" + [i]).innerHTML = temp + "&deg; F";
+        document.querySelector(".humid-" + [i]).textContent = humidity + "%";
+    }
 }
 
 // get previously searched cities from local storage
