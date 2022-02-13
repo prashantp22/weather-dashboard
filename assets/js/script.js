@@ -1,35 +1,35 @@
-var searchFormEl = document.querySelector("#city-search-submit");
-var cityInputEl = document.querySelector("#city-input");
-var previousSearchesEl = document.querySelector("#previous-searches");
+var searchButtonEl = document.querySelector("#button");
+var inputEl = document.querySelector("#input");
+var searcheEl = document.querySelector("#searches");
 var cityNameEl = document.querySelector("#city-name");
-var todayTempEl = document.querySelector("#temp");
-var todayHumidEl = document.querySelector("#humid");
-var todayWindEl = document.querySelector("#wind");
-var todayUVEl = document.querySelector("#uv");
+var currentTempEl = document.querySelector("#temp");
+var currentHumidEl = document.querySelector("#humidity");
+var currentWindEl = document.querySelector("#wind");
+var currentUVEl = document.querySelector("#uv");
 
 
-var previouslySearchedCities = [];
+var searchedCities = [];
 
-// once city is searched, perform this function
+// city search function
 var formSubmitHandler = function (event) {
     event.preventDefault();
     
     
-    var requestedCity = cityInputEl.value.trim();
+    var requestedCity = inputEl.value.trim();
     if (requestedCity) {
        
-        previousCityListItem = document.createElement("li");
-        previousCityListItem.className = "nav-item";
-        previousCityListItem.innerHTML="<a class='nav-link border' href='#'><span data-feather='file'></span>" + requestedCity + "</a>";
+        cityList = document.createElement("li");
+        cityList.className = "nav-item";
+        cityList.innerHTML="<a class='nav-link border' href='#'><span data-feather='file'></span>" + requestedCity + "</a>";
 
-        previousSearchesEl.appendChild(previousCityListItem); 
+        searcheEl.appendChild(cityList); 
 
 
        
-        previouslySearchedCities.push(requestedCity);
+        searchedCities.push(requestedCity);
 
         
-        localStorage.setItem("previousCities", JSON.stringify(previouslySearchedCities));
+        localStorage.setItem("previousCities", JSON.stringify(searchedCities));
         
      
         getWeather(requestedCity);
@@ -40,7 +40,7 @@ var formSubmitHandler = function (event) {
     }
 }
 
-// fetch api call for today's weather
+// today's weather api
 var getWeather = function (cityName) {
   
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=8fc9d3841b8ffcc0fce5fb6a16a654cc"
@@ -50,8 +50,10 @@ var getWeather = function (cityName) {
     .then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
-                // send data to function that will display elements on page
+                // send data to today weather display function
                 displayTodaysWeather(data, cityName);
+                 // get UV Index
+                getUVIndex(data.coord.lon, data.coord.lat);
             })
         } else {
                    alert("Error: " + response.statusText);
@@ -61,7 +63,7 @@ var getWeather = function (cityName) {
 
 var displayTodaysWeather = function (info, city) {
   
-    document.querySelectorAll(".today").textContent="";
+    document.querySelectorAll(".current").textContent="";
 
     // add city to top of page
     cityNameEl.textContent = city + " " + moment().format("L");
@@ -70,26 +72,40 @@ var displayTodaysWeather = function (info, city) {
     
     var temp = info.main.temp
     var fixedTemp = temp.toFixed(1);
-    todayTempEl.innerHTML = fixedTemp + "&deg; F";
+    currentTempEl.innerHTML = fixedTemp + "&deg; F";
 
-    todayHumidEl.textContent = info.main.humidity + "%";
+    currentHumidEl.textContent = info.main.humidity + "%";
     
  
     var windSpeed = info.wind.speed;
     var fixedWindSpeed = windSpeed.toFixed(1);
-    todayWindEl.textContent = fixedWindSpeed + " MPH";
+    currentWindEl.textContent = fixedWindSpeed + " MPH";
 }
 
-
-// if previously searched city is clicked, run this function
-var previousCityLoad = function (event) {
-   
-    var city = event.target.textContent;
-    
-    getWeather(city);
+var getUVIndex = function (lon, lat) {
+    var apiUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=8fc9d3841b8ffcc0fce5fb6a16a654cc&lat=" + lat +"&lon=" + lon;
+    fetch(apiUrl)
+    .then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                // save uv value
+                var uv = data.value;
+                currentUVEl.textContent = uv;
+                // add color to UV index
+                if (uv > 5 ) {
+                    currentUVEl.className = "bg-danger"
+                } else if (uv < 3) {
+                    currentUVEl.className = "bg-success"
+                } else {
+                    currentUVEl.className = "bg-warning"
+                }
+                return uv;
+            });
+        }
+    });
 }
 
-// load previously searched cities to page
+// get previously searched cities from local storage
 var loadLocalStorage = function () {
     
     var previousCities = JSON.parse(localStorage.getItem('previousCities'));
@@ -100,11 +116,11 @@ var loadLocalStorage = function () {
     } else {
         for (var i = 0; i < previousCities.length; i++) {
             
-        previousCityListItem = document.createElement("li");
-        previousCityListItem.className = "nav-item";
-        previousCityListItem.innerHTML="<a class='nav-link border' href='#'><span data-feather='file'></span>" + previousCities[i] + "</a>";
+        cityList = document.createElement("li");
+        cityList.className = "nav-item";
+        cityList.innerHTML="<a class='nav-link border' href='#'><span data-feather='file'></span>" + previousCities[i] + "</a>";
 
-        previousSearchesEl.appendChild(previousCityListItem); 
+        searcheEl.appendChild(cityList); 
         }
     }
 }
@@ -112,5 +128,12 @@ var loadLocalStorage = function () {
 
 loadLocalStorage();
 
-searchFormEl.addEventListener("click", formSubmitHandler);
-previousSearchesEl.addEventListener("click", previousCityLoad);
+searchButtonEl.addEventListener("click", formSubmitHandler);
+
+// click previously searched city
+var citySaved = function (event) {
+    var city = event.target.textContent;
+    getWeather(city);
+}
+
+searcheEl.addEventListener("click", citySaved);

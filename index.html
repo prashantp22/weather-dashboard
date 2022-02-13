@@ -15,17 +15,15 @@
         <main class="container-fluid">
             
             <div class="row">
-                <nav id="sidebarMenu" class="col-md-12 col-lg-3 d-md-block bg-light sidebar collapse">
+                <nav id="sidebarMenu" class="col-md-12 col-lg-3 d-md-block bg-light ">
                     <div class="sidebar-sticky pt-3">
                         
-                        <div id="city-search-form" class="input-group mb-3">
-                            <input id="city-input" type="text" placeholder="City">
-                            <div id="city-search-submit" class="input-group-append">
-                                <button type="button" id="button-addon2">Search</button>
-                            </div>
+                        <div id="city-search-form" class="mb-3">
+                            <input id="input" type="text" placeholder="City">
+                            <button type="button" id="button">Search</button>
                         </div>
                    
-                    <div id="previous-searches" class="nav flex-column">    
+                    <div id="searches" class="nav flex-column">    
                     </div>
                 </nav>
 
@@ -34,10 +32,10 @@
                     <div id="current-forecast" class="row border">
                         <div class="col-12">
                             <h2 id="city-name"><span id="date"></span></h2>
-                            <p>Temperature: <span class="today" id="temp"></span></p>
-                            <p>Humidity: <span class="today" id="humid"></span></p>
-                            <p>Wind Speed: <span class="today" id="wind"></span></p>
-                            <p>UV Index: <span class="today" id="uv"></span></p>
+                            <p>Temperature: <span class="current" id="temp"></span></p>
+                            <p>Humidity: <span class="current" id="humidity"></span></p>
+                            <p>Wind Speed: <span class="current" id="wind"></span></p>
+                            <p>UV Index: <span class="current" id="uv"></span></p>
                         </div>
                     </div>
 
