@@ -8,7 +8,7 @@
     <link   rel="stylesheet"    href="assets/css/style.css"/>
 </head>
 <body>
-        <header>
+        <header class="navbar navbar-dark bg-info">
             <h1>Weather Dashboard</h1>
         </header>
 
@@ -19,18 +19,18 @@
                     <div class="sidebar-sticky pt-3">
                         
                         <div id="city-search-form" class="mb-3">
-                            <input id="input" type="text" placeholder="City">
-                            <button type="button" id="button">Search</button>
+                            <input id="input" type="text" placeholder="City"class="form-control">
+                            <button type="button" id="button" class="btn btn-info">Search</button>
                         </div>
                    
-                    <div id="searches" class="nav flex-column">    
+                    <div id="searches" class="nav nav-pills nav-fill flex-column">    
                     </div>
                 </nav>
 
                 <!-- Today's Weather -->
                 <div class="col-md-12 col-lg-9 container ">
             
-                    <div id="current-forecast" class="row border">
+                    <div id="current-forecast" class="row">
                         <div class="col-12">
                             <h2 id="city-name"><span id="date"></span></h2>
                             <p>Temperature: <span class="current" id="temp"></span></p>
@@ -44,7 +44,7 @@
                         <div class="mt-7">
                             <h2 class="col-12">Five-Day Forecast</h2>
                             <div class="col-12 d-flex">
-                                <div id="day1" >
+                                <div id="day1" class="card text-white bg-info mb-3 mr-3" style="max-width: 18rem;">
                                     <div class="card-header day-1"></div>
                                         <div class="card-body">
                                         <h5 class="card-title"></h5>
@@ -55,7 +55,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div id="day2">
+                                <div id="day2" class="card text-white bg-info mb-3 mr-3" style="max-width: 18rem;">
                                     <div class="card-header day-2"></div>
                                     <div class="card-body">
                                     <h5 class="card-title"></h5>
@@ -66,7 +66,7 @@
                                     </p>
                                     </div>
                                 </div>
-                                <div id="day3">
+                                <div id="day3" class="card text-white bg-info mb-3 mr-3" style="max-width: 18rem;">
                                     <div class="card-header day-3"></div>
                                     <div class="card-body">
                                     <h5 class="card-title"></h5>
@@ -77,7 +77,7 @@
                                     </p>
                                     </div>
                                 </div>
-                                <div id="day4">
+                                <div id="day4" class="card text-white bg-info mb-3 mr-3" style="max-width: 18rem;">
                                     <div class="card-header day-4"></div>
                                     <div class="card-body">
                                     <h5 class="card-title"></h5>
@@ -88,7 +88,7 @@
                                     </p>
                                     </div>
                                 </div>
-                                <div id="day5">
+                                <div id="day5" class="card text-white bg-info mb-3 mr-3" style="max-width: 18rem;">
                                     <div class="card-header day-5"></div>
                                     <div class="card-body">
                                     <h5 class="card-title"></h5>

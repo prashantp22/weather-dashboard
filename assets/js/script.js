@@ -20,7 +20,7 @@ var formSubmitHandler = function (event) {
        
         cityList = document.createElement("li");
         cityList.className = "nav-item";
-        cityList.innerHTML="<a class='nav-link border' href='#'><span data-feather='file'></span>" + requestedCity + "</a>";
+        cityList.innerHTML="<a class='nav-link active' href='#'>" + requestedCity + "</a>";
 
         searcheEl.appendChild(cityList); 
 
@@ -150,7 +150,7 @@ var loadLocalStorage = function () {
             
         cityList = document.createElement("li");
         cityList.className = "nav-item";
-        cityList.innerHTML="<a class='nav-link border' href='#'><span data-feather='file'></span>" + previousCities[i] + "</a>";
+        cityList.innerHTML="<a class='nav-link active' href='#'>" + previousCities[i] + "</a>";
 
         searcheEl.appendChild(cityList); 
         }
