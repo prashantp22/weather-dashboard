@@ -28,3 +28,5 @@ THEN I am again presented with current and future conditions for that city
  https://prashantp22.github.io/weather-dashboard/
 
 ## Screen Shot
+
+<img width="1075" alt="image" src="https://user-images.githubusercontent.com/96153408/153800391-3760aafc-2bc5-46a2-a662-e0a84c83f529.png">
